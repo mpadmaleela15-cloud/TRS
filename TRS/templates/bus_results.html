@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Available Buses</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .search-info {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .bus-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .bus-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bus-name {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .bus-type {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .bus-number {
+            color: #777;
+        }
+
+        .timing {
+            display: flex;
+            gap: 80px;
+            margin: 25px 0;
+        }
+
+        .time {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .city {
+            color: #666;
+        }
+
+        .fare {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .select-btn {
+            background: #e63946;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .select-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="search-info">
+
+            <h1>Available Buses</h1>
+
+            <h2>
+                {{ source }} → {{ destination }}
+            </h2>
+
+            <p>
+                Travel Date: {{ travel_date }}
+            </p>
+
+        </div>
+
+
+        {% if schedules %}
+
+        {% for schedule in schedules %}
+        {% if schedule.booking_activity %}
+        <p>
+            <strong>{{ schedule.booking_activity }}</strong>
+        </p>
+
+        <p>
+            Estimated chance of booking within 1 hour:
+            <strong>{{ schedule.booking_probability }}%</strong>
+        </p>
+        {% endif %}
+
+        <div class="bus-card">
+
+            <div class="bus-header">
+
+                <div>
+                    <div class="bus-name">
+                        {{ schedule.bus.bus_name }}
+                    </div>
+
+                    <div class="bus-type">
+                        {{ schedule.bus.bus_type }}
+                    </div>
+
+                    <div class="bus-number">
+                        Bus Number: {{ schedule.bus.bus_number }}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="fare">
+                        ₹{{ schedule.fare }}
+                    </div>
+
+                    <p>
+                        {{ schedule.bus.total_seats }} Seats
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="timing">
+
+                <div>
+                    <div class="time">
+                        {{ schedule.departure_time }}
+                    </div>
+
+                    <div class="city">
+                        {{ schedule.route.source }}
+                    </div>
+                </div>
+
+
+                <div>
+                    <div class="time">
+                        {{ schedule.arrival_time }}
+                    </div>
+
+                    <div class="city">
+                        {{ schedule.route.destination }}
+                    </div>
+                </div>
+
+            </div>
+            <a href="{% url 'select_seat' schedule.id %}" class="select-btn">
+
+                Select Seat
+
+            </a>
+        </div>
+
+        {% endfor %}
+
+        {% else %}
+
+        <div class="bus-card">
+            <h2>No buses found.</h2>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <script>
+
+        function selectBus(scheduleId) {
+
+            alert("Selected Bus Schedule: " + scheduleId);
+
+        }
+
+    </script>
+
+</body>
+
+</html>

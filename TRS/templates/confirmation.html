@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Booking Confirmation</title>
+</head>
+
+<body>
+
+<div>
+
+    <h1>🎉 Booking Confirmed!</h1>
+
+    <p>
+        Your bus ticket has been booked successfully.
+    </p>
+
+    <hr>
+
+    <h2>Booking Details</h2>
+
+    <p>
+        Booking ID:
+        <strong>{{ booking.id }}</strong>
+    </p>
+
+    <p>
+        Passenger:
+        <strong>{{ booking.passenger.user.first_name }}</strong>
+    </p>
+
+    <p>
+        Route:
+        <strong>
+            {{ booking.schedule.route.source }}
+            →
+            {{ booking.schedule.route.destination }}
+        </strong>
+    </p>
+
+    <p>
+        Bus:
+        <strong>{{ booking.schedule.bus.bus_name }}</strong>
+    </p>
+
+    <p>
+        Bus Type:
+        {{ booking.schedule.bus.bus_type }}
+    </p>
+
+    <p>
+        Travel Date:
+        {{ booking.schedule.travel_date }}
+    </p>
+
+    <p>
+        Departure:
+        {{ booking.schedule.departure_time }}
+    </p>
+
+    <p>
+        Arrival:
+        {{ booking.schedule.arrival_time }}
+    </p>
+
+    <p>
+        Seat:
+        <strong>{{ seat_number }}</strong>
+    </p>
+
+    <p>
+        Amount:
+        <strong>₹{{ booking.total_amount }}</strong>
+    </p>
+
+    <hr>
+
+    <h2>Payment Details</h2>
+
+    <p>
+        Payment Status:
+        <strong>{{ payment.status }}</strong>
+    </p>
+
+    <p>
+        Payment Method:
+        {{ payment.payment_method }}
+    </p>
+
+    <p>
+        Transaction ID:
+        <strong>{{ payment.transaction_id }}</strong>
+    </p>
+
+    <hr>
+
+    <p>
+        <strong>Thank you for booking with TRS!</strong>
+    </p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Live Bus Tracking</title>
+
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Live Bus Tracking</h1>
+
+    <hr>
+
+    <h2>{{ bus.bus_name }}</h2>
+
+    <p>
+        Bus Number: {{ bus.bus_number }}
+    </p>
+
+    {% if tracking %}
+
+    <h3>Current Location</h3>
+
+    <p>
+        Latitude: {{ tracking.latitude }}
+    </p>
+
+    <p>
+        Longitude: {{ tracking.longitude }}
+    </p>
+
+    <p>
+        Speed: {{ tracking.speed }} km/h
+    </p>
+
+    <p>
+        Last Updated: {{ tracking.recorded_at }}
+    </p>
+
+    <h3>Bus Location on Map</h3>
+
+    <div id="map"></div>
+
+    {% else %}
+
+    <p>
+        Live tracking information is not available.
+    </p>
+
+    {% endif %}
+
+
+    <!-- Leaflet Map JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+    {% if tracking %}
+
+    <script>
+        const latitude = parseFloat("{{ tracking.latitude }}");
+        const longitude = parseFloat("{{ tracking.longitude }}");
+        const speed = "{{ tracking.speed }}";
+
+        const map = L.map("map").setView(
+            [latitude, longitude],
+            13
+        );
+
+        L.tileLayer(
+           "https://tile.openstreetmap.de/{z}/{x}/{y}.png",
+    {
+        attribution: "&copy; OpenStreetMap contributors" }
+        ).addTo(map);
+
+        L.marker([latitude, longitude])
+            .addTo(map)
+            .bindPopup(
+                "<b>{{ bus.bus_number }}</b><br>Speed: "
+                + speed
+                + " km/h"
+            )
+            .openPopup();
+    </script>
+
+    L.marker([latitude, longitude])
+    .addTo(map)
+    .bindPopup(
+    "<b>{{ bus.bus_number }}</b><br>Speed: {{ tracking.speed }} km/h"
+    )
+    .openPopup();
+
+    </script>
+
+    {% endif %}
+
+</body>
+
+</html>

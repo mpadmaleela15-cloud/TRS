@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Bookings</title>
+</head>
+
+<body>
+
+    <div>
+
+        <h1>My Bookings</h1>
+
+        <hr>
+
+        {% if message %}
+
+        <p>{{ message }}</p>
+
+        {% elif bookings %}
+
+        {% for booking in bookings %}
+
+        <div>
+
+            <h2>
+                Booking ID: {{ booking.id }}
+            </h2>
+
+            <p>
+                Passenger:
+                <strong>{{ booking.passenger.user.first_name }}</strong>
+            </p>
+
+            <p>
+                Route:
+                <strong>
+                    {{ booking.schedule.route.source }}
+                    →
+                    {{ booking.schedule.route.destination }}
+                </strong>
+            </p>
+
+            <p>
+                Bus:
+                {{ booking.schedule.bus.bus_name }}
+            </p>
+
+            <p>
+                Bus Type:
+                {{ booking.schedule.bus.bus_type }}
+            </p>
+
+            <p>
+                Travel Date:
+                {{ booking.schedule.travel_date }}
+            </p>
+
+            <p>
+                Departure:
+                {{ booking.schedule.departure_time }}
+            </p>
+
+            <p>
+                Arrival:
+                {{ booking.schedule.arrival_time }}
+            </p>
+
+            {% for booking_seat in booking.booking_seats %}
+
+            <p>
+                Seat:
+                <strong>{{ booking_seat.seat.seat_number }}</strong>
+            </p>
+
+            {% endfor %}
+
+            <p>
+                Amount:
+                <strong>₹{{ booking.total_amount }}</strong>
+            </p>
+
+            <p>
+                Booking Status:
+                <strong>{{ booking.status }}</strong>
+            </p>
+            {% if booking.status == "CONFIRMED" %}
+
+            <p>
+                <a href="{% url 'live_tracking' booking.schedule.bus.id %}">
+                    📍 Track My Bus
+                </a>
+            </p>
+
+            <p>
+                <a href="{% url 'review_bus' booking.schedule.bus.id %}">
+                    ⭐ Review Bus
+                </a>
+            </p>
+
+            {% endif %}
+            {% if booking.payment %}
+
+            <hr>
+
+            <h3>Payment Details</h3>
+
+            <p>
+                Payment Status:
+                <strong>{{ booking.payment.status }}</strong>
+            </p>
+
+            <p>
+                Payment Method:
+                {{ booking.payment.payment_method }}
+            </p>
+
+            <p>
+                Transaction ID:
+                <strong>{{ booking.payment.transaction_id }}</strong>
+            </p>
+
+            {% endif %}
+
+            <hr>
+
+        </div>
+
+        {% endfor %}
+
+        {% else %}
+
+        <p>You don't have any bookings yet.</p>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Select Seat</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .bus-info {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .seat-layout {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .seats {
+            display: grid;
+            grid-template-columns: repeat(4, 60px);
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .seat {
+            padding: 15px 5px;
+            border: 1px solid #aaa;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            background: #eee;
+        }
+
+        .seat:hover {
+            background: #ddd;
+        }
+
+        .selected {
+            background: #28a745;
+            color: white;
+        }
+
+        .continue-btn {
+            display: block;
+            margin: 30px auto 0;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #e63946;
+            color: white;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="bus-info">
+
+            <h1>{{ schedule.bus.bus_name }}</h1>
+
+            <p>
+                {{ schedule.route.source }}
+                →
+                {{ schedule.route.destination }}
+            </p>
+
+            <p>
+                {{ schedule.bus.bus_type }}
+            </p>
+
+            <p>
+                Travel Date: {{ schedule.travel_date }}
+            </p>
+
+            <p>
+                Fare: ₹{{ schedule.fare }}
+            </p>
+
+        </div>
+
+
+        <div class="seat-layout">
+
+            <h2>Select Your Seat</h2>
+
+            <div class="seats">
+
+                {% for seat in seats %}
+
+                <div class="seat" onclick="selectSeat(this, '{{ seat.seat_number }}')">
+
+                    {{ seat.seat_number }}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <p id="selected-seat">
+                No seat selected
+            </p>
+
+            <button class="continue-btn" onclick="continueBooking()">
+                Continue
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        let selectedSeat = null;
+
+        function selectSeat(element, seatNumber) {
+
+            if (selectedSeat === element) {
+
+                element.classList.remove("selected");
+
+                selectedSeat = null;
+
+                document.getElementById("selected-seat").innerText =
+                    "No seat selected";
+
+                return;
+            }
+
+            if (selectedSeat) {
+                selectedSeat.classList.remove("selected");
+            }
+
+            element.classList.add("selected");
+
+            selectedSeat = element;
+
+            document.getElementById("selected-seat").innerText =
+                "Selected Seat: " + seatNumber;
+        }
+
+        function continueBooking() {
+
+            if (!selectedSeat) {
+                alert("Please select a seat.");
+                return;
+            }
+
+            const seatNumber = selectedSeat.innerText.trim();
+
+            const scheduleId = "{{ schedule.id }}";
+
+            window.location.href =
+                `/passenger-details/${scheduleId}/${seatNumber}/`;
+        }
+    </script>
+
+</body>
+
+</html>

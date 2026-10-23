@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Review Bus</title>
+</head>
+
+<body>
+
+    <h1>Review Bus</h1>
+
+    <hr>
+
+    <h2>{{ bus.bus_name }}</h2>
+
+    <p>
+        Bus Number: {{ bus.bus_number }}
+    </p>
+
+    {% if average_rating %}
+        <h3>
+            Average Rating:
+            ⭐ {{ average_rating|floatformat:1 }} / 5
+        </h3>
+    {% else %}
+        <p>No ratings yet.</p>
+    {% endif %}
+
+    <hr>
+
+    {% if message %}
+        <p>
+            <strong>{{ message }}</strong>
+        </p>
+    {% endif %}
+
+    <h3>Write Your Review</h3>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <p>Rating:</p>
+
+        <label>
+            <input type="radio" name="rating" value="1">
+            ⭐ 1
+        </label>
+
+        <label>
+            <input type="radio" name="rating" value="2">
+            ⭐⭐ 2
+        </label>
+
+        <label>
+            <input type="radio" name="rating" value="3">
+            ⭐⭐⭐ 3
+        </label>
+
+        <label>
+            <input type="radio" name="rating" value="4">
+            ⭐⭐⭐⭐ 4
+        </label>
+
+        <label>
+            <input type="radio" name="rating" value="5">
+            ⭐⭐⭐⭐⭐ 5
+        </label>
+
+        <br><br>
+
+        <label for="comment">
+            Your Comment:
+        </label>
+
+        <br>
+
+        <textarea
+            id="comment"
+            name="comment"
+            rows="5"
+            cols="50"
+            placeholder="Write your experience..."
+        ></textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Submit Review
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h2>Customer Reviews</h2>
+
+    {% if reviews %}
+
+        {% for review in reviews %}
+
+            <div>
+
+                <p>
+                    <strong>
+                        {{ review.passenger.user.first_name }}
+                    </strong>
+                </p>
+
+                <p>
+                    Rating:
+                    {% if review.rating == 1 %}
+                        ⭐
+                    {% elif review.rating == 2 %}
+                        ⭐⭐
+                    {% elif review.rating == 3 %}
+                        ⭐⭐⭐
+                    {% elif review.rating == 4 %}
+                        ⭐⭐⭐⭐
+                    {% elif review.rating == 5 %}
+                        ⭐⭐⭐⭐⭐
+                    {% endif %}
+                </p>
+
+                {% if review.comment %}
+                    <p>
+                        {{ review.comment }}
+                    </p>
+                {% endif %}
+
+                <p>
+                    <small>
+                        {{ review.created_at }}
+                    </small>
+                </p>
+
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            No reviews yet.
+        </p>
+
+    {% endif %}
+
+</body>
+
+</html>

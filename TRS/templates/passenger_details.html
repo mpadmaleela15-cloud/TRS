@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Passenger Details</title>
+</head>
+
+<body>
+
+    <div>
+
+        <h1>Passenger Details</h1>
+
+        <h2>
+            {{ schedule.route.source }}
+            →
+            {{ schedule.route.destination }}
+        </h2>
+
+        <p>
+            Bus: {{ schedule.bus.bus_name }}
+        </p>
+
+        <p>
+            Seat: <strong>{{ seat_number }}</strong>
+        </p>
+
+        <p>
+            Fare: ₹{{ schedule.fare }}
+        </p>
+
+        <hr>
+        {% if message %}
+        <p style="color: green;">
+            {{ message }}
+        </p>
+        {% endif %}
+        <form method="POST" action="{% url 'passenger_details' schedule.id seat_number %}">
+            {% csrf_token %}
+
+            <label>Passenger Name</label>
+            <br>
+            <input type="text" name="name" required>
+
+            <br><br>
+
+            <label>Age</label>
+            <br>
+            <input type="number" name="age" required>
+
+            <br><br>
+
+            <label>Gender</label>
+            <br>
+
+            <select name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <br><br>
+
+            <label>Phone Number</label>
+            <br>
+            <input type="tel" name="phone" required>
+
+            <br><br>
+
+            <label>Email</label>
+            <br>
+            <input type="email" name="email" required>
+
+            <br><br>
+
+            <button type="submit">
+                Continue to Payment
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cancel Booking</title>
+</head>
+
+<body>
+
+    <div>
+
+        <h1>Cancel Booking</h1>
+
+        {% if message %}
+        <p>
+            <strong>{{ message }}</strong>
+        </p>
+        {% endif %}
+
+        {% if booking %}
+
+        <hr>
+
+        <h2>Booking Details</h2>
+
+        <p>
+            Booking ID:
+            <strong>{{ booking.id }}</strong>
+        </p>
+
+        <p>
+            Route:
+            {{ booking.schedule.route.source }}
+            →
+            {{ booking.schedule.route.destination }}
+        </p>
+
+        <p>
+            Bus:
+            {{ booking.schedule.bus.bus_name }}
+        </p>
+
+        <p>
+            Travel Date:
+            {{ booking.schedule.travel_date }}
+        </p>
+
+        <p>
+            Amount:
+            <strong>₹{{ booking.total_amount }}</strong>
+        </p>
+
+        {% if cancellation %}
+
+        <hr>
+
+        <h2>Cancellation Details</h2>
+
+        <p>
+            Reason:
+            {{ cancellation.reason }}
+        </p>
+
+        <p>
+            Refund Amount:
+            <strong>₹{{ cancellation.refund_amount }}</strong>
+        </p>
+
+        <p>
+            Status:
+            <strong>{{ cancellation.status }}</strong>
+        </p>
+        {% if booking.status == "CONFIRMED" %}
+
+        <p>
+            <a href="{% url 'cancel_booking' booking.id %}">
+                Cancel Booking
+            </a>
+        </p>
+
+        {% endif %}
+
+        {% else %}
+
+        <hr>
+
+        <h3>Cancellation Reason</h3>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <textarea name="reason" rows="5" cols="40" placeholder="Enter reason for cancellation" required></textarea>
+
+            <br><br>
+
+            <button type="submit">
+                Cancel Booking
+            </button>
+
+        </form>
+
+        {% endif %}
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>

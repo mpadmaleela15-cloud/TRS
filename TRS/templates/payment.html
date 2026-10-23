@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Payment</title>
+</head>
+
+<body>
+
+    <div>
+
+        <h1>Payment</h1>
+        {% if message %}
+        <p style="color: green;">
+            {{ message }}
+        </p>
+        {% endif %}
+
+        <hr>
+
+        <h2>
+            {{ booking.schedule.route.source }}
+            →
+            {{ booking.schedule.route.destination }}
+        </h2>
+
+        <p>
+            Bus: {{ booking.schedule.bus.bus_name }}
+        </p>
+
+        <p>
+            Booking ID: <strong>{{ booking.id }}</strong>
+        </p>
+
+        <p>
+            Seat: <strong>{{ seat_number }}</strong>
+        </p>
+
+        <p>
+            Amount:
+            <strong>₹{{ booking.total_amount }}</strong>
+        </p>
+
+        <hr>
+
+        <h3>Select Payment Method</h3>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>
+                <input type="radio" name="payment_method" value="UPI" required>
+                UPI
+            </label>
+
+            <br><br>
+
+            <label>
+                <input type="radio" name="payment_method" value="CARD">
+                Card
+            </label>
+
+            <br><br>
+
+            <label>
+                <input type="radio" name="payment_method" value="NETBANKING">
+                Net Banking
+            </label>
+
+            <br><br>
+
+            <label>
+                <input type="radio" name="payment_method" value="WALLET">
+                Wallet
+            </label>
+
+            <br><br>
+
+            <button type="submit">
+                Pay ₹{{ booking.total_amount }}
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>
